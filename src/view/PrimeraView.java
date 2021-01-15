@@ -22,7 +22,7 @@ import java.net.URL;
 
 public class PrimeraView {
 
-	private JFrame frame;
+	private JFrame frmLogin;
 	private JLabel lblBienvenida;
 	private JTextField textFieldUsuario;
 	private JPasswordField passwordField;
@@ -48,7 +48,7 @@ public class PrimeraView {
 		setFrame();
 		setComponents();
 		setLiseners();
-		frame.setVisible(true);
+		frmLogin.setVisible(true);
 		
 		
 	}
@@ -56,19 +56,19 @@ public class PrimeraView {
 		lblBienvenida = new JLabel("Bienvenido a la pokedex ");
 		lblBienvenida.setFont(new Font("Tahoma", Font.BOLD, 20));
 		lblBienvenida.setBounds(86, 11, 290, 65);
-		frame.getContentPane().add(lblBienvenida);
+		frmLogin.getContentPane().add(lblBienvenida);
 		
 		btnRegister = new JButton("Registrarse");
 		btnRegister.setBounds(71, 183, 89, 23);
-		frame.getContentPane().add(btnRegister);
+		frmLogin.getContentPane().add(btnRegister);
 		
 		btnLogin = new JButton("Login");
 		btnLogin.setBounds(263, 183, 89, 23);
-		frame.getContentPane().add(btnLogin);
+		frmLogin.getContentPane().add(btnLogin);
 		
 		textFieldUsuario = new JTextField();
 		textFieldUsuario.setBounds(195, 75, 99, 23);
-		frame.getContentPane().add(textFieldUsuario);
+		frmLogin.getContentPane().add(textFieldUsuario);
 		textFieldUsuario.setColumns(10);
 		
 		passwordField = new JPasswordField();
@@ -77,24 +77,24 @@ public class PrimeraView {
 			public void keyPressed(KeyEvent e) {
 				if (e.getKeyChar() == KeyEvent.VK_ENTER) {
 					new PokedexView();
-					frame.dispose();
+					frmLogin.dispose();
 					
 				}
 			}
 			
 		});
 		passwordField.setBounds(195, 109, 99, 23);
-		frame.getContentPane().add(passwordField);
+		frmLogin.getContentPane().add(passwordField);
 		
 		lblUsuario = new JLabel("Usuario");
 		lblUsuario.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblUsuario.setBounds(81, 77, 79, 21);
-		frame.getContentPane().add(lblUsuario);
+		frmLogin.getContentPane().add(lblUsuario);
 		
 		lblContrasena = new JLabel("Contrase\u00F1a");
 		lblContrasena.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblContrasena.setBounds(81, 111, 79, 21);
-		frame.getContentPane().add(lblContrasena);
+		frmLogin.getContentPane().add(lblContrasena);
 		
 	}
 	public void setLiseners() {
@@ -102,7 +102,7 @@ public class PrimeraView {
 			public void actionPerformed(ActionEvent arg0) {
 				if (login.comprobarLogin(textFieldUsuario.getText(), String.valueOf(passwordField.getPassword()))) {
 					new PokedexView();
-					frame.dispose();
+					frmLogin.dispose();
 				}else {
 					System.out.println("no funsiona");
 				}
@@ -112,12 +112,14 @@ public class PrimeraView {
 		
 	}
 	public void setFrame() {
-		frame = new JFrame();
-		frame.setBounds(100, 100, 455, 279);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
+		frmLogin = new JFrame();
+		frmLogin.setResizable(false);
+		frmLogin.setTitle("Login");
+		frmLogin.setBounds(100, 100, 455, 279);
+		frmLogin.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmLogin.getContentPane().setLayout(null);
 		try {
-			frame.setIconImage(ImageIO.read(new URL("https://cdn0.iconfinder.com/data/icons/pokemon-go-vol-2/135/_pokemon_moltres-512.png")));
+			frmLogin.setIconImage(ImageIO.read(new URL("https://cdn0.iconfinder.com/data/icons/pokemon-go-vol-2/135/_pokemon_moltres-512.png")));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
