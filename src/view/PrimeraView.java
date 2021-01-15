@@ -5,6 +5,8 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import java.awt.Font;
+
+import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JTextField;
 
@@ -13,6 +15,10 @@ import DAO.LoginDAO;
 import javax.swing.JPasswordField;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.io.IOException;
+import java.net.URL;
 
 public class PrimeraView {
 
@@ -66,6 +72,17 @@ public class PrimeraView {
 		textFieldUsuario.setColumns(10);
 		
 		passwordField = new JPasswordField();
+		passwordField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyChar() == KeyEvent.VK_ENTER) {
+					new PokedexView();
+					frame.dispose();
+					
+				}
+			}
+			
+		});
 		passwordField.setBounds(195, 109, 99, 23);
 		frame.getContentPane().add(passwordField);
 		
@@ -85,7 +102,7 @@ public class PrimeraView {
 			public void actionPerformed(ActionEvent arg0) {
 				if (login.comprobarLogin(textFieldUsuario.getText(), String.valueOf(passwordField.getPassword()))) {
 					new PokedexView();
-					frame.setVisible(false);
+					frame.dispose();
 				}else {
 					System.out.println("no funsiona");
 				}
@@ -99,6 +116,11 @@ public class PrimeraView {
 		frame.setBounds(100, 100, 455, 279);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
-		
+		try {
+			frame.setIconImage(ImageIO.read(new URL("https://cdn0.iconfinder.com/data/icons/pokemon-go-vol-2/135/_pokemon_moltres-512.png")));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 	}
+}
 }

@@ -6,9 +6,11 @@ import java.sql.SQLException;
 import models.Pokemon;
 
 public class PokedexDAO extends AbstractDao {
+	
 
 	public Pokemon pokemon(int indice) {
-		String tipos = "",tipo="";
+		String tipo = "" ;
+		int indiceTipo=0;
 		try {
 			ResultSet rsPokemon = stmt.executeQuery("Select * from pokemon where numero = " + indice);
 			if (rsPokemon.next()) {
@@ -22,11 +24,15 @@ public class PokedexDAO extends AbstractDao {
 								+ indice);
 				if (rsTipos.next()) {
 					tipo = rsTipos.getString(1);
+					indiceTipo++;
 					while (rsTipos.next()) {
-						tipos=tipo.concat(",").concat(rsTipos.getString(1));
+						indiceTipo++;
+						if (indiceTipo>1) {
+							tipo+=", "+rsTipos.getString(1);
+						}
 					}
 				}
-				pokemon.setTipos(tipos);
+				pokemon.setTipos(tipo);
 				return pokemon;
 			}
 
@@ -37,5 +43,20 @@ public class PokedexDAO extends AbstractDao {
 
 		return null;
 
+	}
+	
+	public int contarPokemon() {
+		
+		try {
+			ResultSet rsContar = stmt.executeQuery("SELECT COUNT(*) from pokemon.pokemon");
+			if (rsContar.next()) {
+				 return rsContar.getInt(1);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return -1;
+		
 	}
 }
