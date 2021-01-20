@@ -72,17 +72,7 @@ public class PrimeraView {
 		textFieldUsuario.setColumns(10);
 		
 		passwordField = new JPasswordField();
-		passwordField.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(KeyEvent e) {
-				if (e.getKeyChar() == KeyEvent.VK_ENTER) {
-					new PokedexView();
-					frmLogin.dispose();
-					
-				}
-			}
-			
-		});
+		
 		passwordField.setBounds(195, 109, 99, 23);
 		frmLogin.getContentPane().add(passwordField);
 		
@@ -110,6 +100,17 @@ public class PrimeraView {
 			}
 		});
 		
+		passwordField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyChar() == KeyEvent.VK_ENTER) {
+					new PokedexView();
+					frmLogin.dispose();
+					
+				}
+			}
+			
+		});
 	}
 	public void setFrame() {
 		frmLogin = new JFrame();

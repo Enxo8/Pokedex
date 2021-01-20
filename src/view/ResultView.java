@@ -1,33 +1,33 @@
 package view;
 
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JTextArea;
-
-import DAO.PokedexDAO;
-import models.Pokemon;
-
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 import java.awt.Color;
+
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 
-import java.awt.Font;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JMenu;
+import javax.swing.JTextArea;
 
 
-public class PokedexView implements KeyListener {
+import models.Pokemon;
 
-	private JFrame frmPokedex;
+public class ResultView implements KeyListener  {
+
+	private JFrame frmResultBusqueda;
 	private	JLabel lblImagen;
 	private JLabel lblNombreP;
 	private	JLabel lblNumPokedex;
@@ -45,25 +45,26 @@ public class PokedexView implements KeyListener {
 	private	JLabel lblNumPokedexBD;
 	private JButton btnAnterior;
 	private JButton btnSiguiente;
-	private PokedexDAO pokemon;
 	private Pokemon poke;
-	private int indice =1;
+	private int indice =0;
 	private JLabel lblTipos;
 	private JLabel lblTiposBD;
 	private JMenuBar menuBar;
 	private JMenu mnMenu;
-	private JMenuItem mntmBuscar;
+	private JMenuItem mntmSalir;
 	private JMenuItem mntmAnadir;
 	private JMenuItem mntmQuitar;
+	private ArrayList<Pokemon> listaPokemon;
 	
 	
 
 
 	/**
 	 * Create the application.
+	 * @param listaPokemon 
 	 */
-	public PokedexView() {
-		pokemon = new PokedexDAO();
+	public ResultView(ArrayList<Pokemon> listaPokemon) {
+		this.listaPokemon=listaPokemon;
 		
 		initialize();
 	}
@@ -72,37 +73,37 @@ public class PokedexView implements KeyListener {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		poke=listaPokemon.get(indice);
 		setFrame();
 		setComponents();
-		cambioPokemon(indice);
+		cambioPokemon();
 		setLiseners();
-		frmPokedex.setVisible(true);
-		frmPokedex.addKeyListener(this);
-		frmPokedex.setFocusable(true);
-		frmPokedex.setFocusTraversalKeysEnabled(false);
-		
+		frmResultBusqueda.setVisible(true);
 		
 	}
 	
 	private void setFrame() {
-		frmPokedex = new JFrame();
-		frmPokedex.setTitle("Pokedex");
-		frmPokedex.setResizable(false);
+		frmResultBusqueda = new JFrame();
+		frmResultBusqueda.setTitle("Pokedex");
+		frmResultBusqueda.setResizable(false);
+		frmResultBusqueda.addKeyListener(this);
+		frmResultBusqueda.setFocusable(true);
+		frmResultBusqueda.setFocusTraversalKeysEnabled(false);
 		try {
-			frmPokedex.setIconImage(ImageIO.read(new URL("https://cdn0.iconfinder.com/data/icons/pokemon-go-vol-2/135/_pokemon_moltres-512.png")));
+			frmResultBusqueda.setIconImage(ImageIO.read(new URL("https://cdn0.iconfinder.com/data/icons/pokemon-go-vol-2/135/_pokemon_moltres-512.png")));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		frmPokedex.setBounds(100, 100, 724, 431);
-		frmPokedex.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frmPokedex.getContentPane().setLayout(null);	
+		frmResultBusqueda.setBounds(100, 100, 724, 431);
+		frmResultBusqueda.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmResultBusqueda.getContentPane().setLayout(null);	
 	}
 
 	private void setLiseners() {
 		btnSiguiente.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				frmPokedex.requestFocus();
+				frmResultBusqueda.requestFocus();
 				siguiente();
 				
 			}
@@ -110,15 +111,15 @@ public class PokedexView implements KeyListener {
 		
 		btnAnterior.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent arg0) {
-			frmPokedex.requestFocus();
-			anterior();
+				frmResultBusqueda.requestFocus();
+				anterior();
 		}
 	});
 		
-		mntmBuscar.addActionListener(new ActionListener() {
+		mntmSalir.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent arg0) {
-			new BuscarView();	
-			frmPokedex.dispose();
+			new PokedexView();	
+			frmResultBusqueda.dispose();
 			
 		}
 	});
@@ -135,38 +136,38 @@ public class PokedexView implements KeyListener {
 
 		lblImagen = new JLabel("");
 		lblImagen.setBounds(36, 76, 212, 196);
-		frmPokedex.getContentPane().add(lblImagen);
+		frmResultBusqueda.getContentPane().add(lblImagen);
 		
 		
 		
 		lblNombreP = new JLabel("Nombre:");
 		lblNombreP.setBounds(354, 58, 72, 21);
-		frmPokedex.getContentPane().add(lblNombreP);
+		frmResultBusqueda.getContentPane().add(lblNombreP);
 		
 		lblNumPokedex = new JLabel("Numero de la Pokedex");
 		lblNumPokedex.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblNumPokedex.setBounds(194, 19, 138, 14);
-		frmPokedex.getContentPane().add(lblNumPokedex);
+		frmResultBusqueda.getContentPane().add(lblNumPokedex);
 		
 		lblAltura = new JLabel("Altura:");
 		lblAltura.setBounds(354, 100, 46, 14);
-		frmPokedex.getContentPane().add(lblAltura);
+		frmResultBusqueda.getContentPane().add(lblAltura);
 		
 		lblPeso = new JLabel("Peso:");
 		lblPeso.setBounds(489, 100, 46, 14);
-		frmPokedex.getContentPane().add(lblPeso);
+		frmResultBusqueda.getContentPane().add(lblPeso);
 		
 		lblCategoria = new JLabel("Categoria:");
 		lblCategoria.setBounds(354, 136, 72, 14);
-		frmPokedex.getContentPane().add(lblCategoria);
+		frmResultBusqueda.getContentPane().add(lblCategoria);
 		
 		lblHabilidad = new JLabel("Habilidad:");
 		lblHabilidad.setBounds(354, 173, 55, 14);
-		frmPokedex.getContentPane().add(lblHabilidad);
+		frmResultBusqueda.getContentPane().add(lblHabilidad);
 		
 		lblDescripcion = new JLabel("Descripcion:");
 		lblDescripcion.setBounds(303, 221, 97, 14);
-		frmPokedex.getContentPane().add(lblDescripcion);
+		frmResultBusqueda.getContentPane().add(lblDescripcion);
 		
 		textAreaDescripcion = new JTextArea();
 		textAreaDescripcion.setBackground(Color.LIGHT_GRAY);
@@ -175,59 +176,56 @@ public class PokedexView implements KeyListener {
 		textAreaDescripcion.setWrapStyleWord(true);
 		
 		textAreaDescripcion.setLineWrap(true);
-		frmPokedex.getContentPane().add(textAreaDescripcion);
+		frmResultBusqueda.getContentPane().add(textAreaDescripcion);
 		
 		lblHabilidadBD = new JLabel("New label");
 		lblHabilidadBD.setBounds(419, 173, 89, 14);
-		frmPokedex.getContentPane().add(lblHabilidadBD);
+		frmResultBusqueda.getContentPane().add(lblHabilidadBD);
 		
 		lblCategoriaBD = new JLabel("New label");
 		lblCategoriaBD.setBounds(419, 136, 99, 14);
-		frmPokedex.getContentPane().add(lblCategoriaBD);
+		frmResultBusqueda.getContentPane().add(lblCategoriaBD);
 		
 		lblAlturaBD = new JLabel("New label");
 		lblAlturaBD.setBounds(410, 100, 69, 14);
-		frmPokedex.getContentPane().add(lblAlturaBD);
+		frmResultBusqueda.getContentPane().add(lblAlturaBD);
 		
 		lblPesoBD = new JLabel("New label");
 		lblPesoBD.setBounds(545, 100, 73, 14);
-		frmPokedex.getContentPane().add(lblPesoBD);
+		frmResultBusqueda.getContentPane().add(lblPesoBD);
 		
 		lblNombreBD = new JLabel("New label");
 		lblNombreBD.setBounds(406, 61, 72, 14);
-		frmPokedex.getContentPane().add(lblNombreBD);
+		frmResultBusqueda.getContentPane().add(lblNombreBD);
 		
 		lblNumPokedexBD = new JLabel("New label");
 		lblNumPokedexBD.setFont(new Font("Script MT Bold", Font.BOLD, 23));
 		lblNumPokedexBD.setBounds(342, 11, 84, 36);
-		frmPokedex.getContentPane().add(lblNumPokedexBD);
+		frmResultBusqueda.getContentPane().add(lblNumPokedexBD);
 		
 		btnAnterior = new JButton("Anterior");
 		btnAnterior.setBounds(107, 328, 89, 23);
-		frmPokedex.getContentPane().add(btnAnterior);
+		frmResultBusqueda.getContentPane().add(btnAnterior);
 		
 		btnSiguiente = new JButton("Siguiente");
 		
 		btnSiguiente.setBounds(529, 328, 89, 23);
-		frmPokedex.getContentPane().add(btnSiguiente);		
+		frmResultBusqueda.getContentPane().add(btnSiguiente);		
 		
 		lblTipos = new JLabel("Tipo:");
 		lblTipos.setBounds(489, 136, 46, 14);
-		frmPokedex.getContentPane().add(lblTipos);
+		frmResultBusqueda.getContentPane().add(lblTipos);
 		
 		lblTiposBD = new JLabel("New labe");
 		lblTiposBD.setBounds(528, 136, 97, 14);
-		frmPokedex.getContentPane().add(lblTiposBD);
+		frmResultBusqueda.getContentPane().add(lblTiposBD);
 		
 		menuBar = new JMenuBar();
 		menuBar.setBounds(0, 0, 46, 22);
-		frmPokedex.getContentPane().add(menuBar);
+		frmResultBusqueda.getContentPane().add(menuBar);
 		
 		mnMenu = new JMenu("Men\u00FA");
 		menuBar.add(mnMenu);
-		
-		mntmBuscar = new JMenuItem("Buscar Pokemon");
-		mnMenu.add(mntmBuscar);
 				
 		
 		mntmAnadir = new JMenuItem("A\u00F1adir Pokemon");
@@ -235,18 +233,21 @@ public class PokedexView implements KeyListener {
 		
 		mntmQuitar = new JMenuItem("Quitar Pokemon");
 		mnMenu.add(mntmQuitar);
+		
+		mntmSalir = new JMenuItem("Salir");
+		mnMenu.add(mntmSalir);
 	}
 
-	public void cambioPokemon(int indice) {
-		String numero=String.valueOf(indice);
-		poke=pokemon.pokemon(indice);
+	public void cambioPokemon() {
+		
+		String numero=String.valueOf(poke.getNumero());
 		lblHabilidadBD.setText(poke.getHabilidad());
 		lblCategoriaBD.setText(poke.getCategoria());
 		lblNombreBD.setText(poke.getNombre());
 		lblTiposBD.setText(poke.getTipos());
 		lblAlturaBD.setText(Float.toString(poke.getAltura()));
 		lblPesoBD.setText(Float.toString(poke.getPeso()));
-		lblNumPokedexBD.setText(Integer.toString(indice));
+		lblNumPokedexBD.setText(Integer.toString(poke.getNumero()));
 		textAreaDescripcion.setText(poke.getDescripcion());
 		while (numero.length()<3) {
 			numero="0"+numero;
@@ -263,22 +264,26 @@ public class PokedexView implements KeyListener {
 
 	
 	public void anterior() {
-		if (indice-->1) {
-			cambioPokemon(indice);
+		if (indice-->0) {
+			poke =listaPokemon.get(indice);
+			cambioPokemon();
 			
 		}else {
-			indice=pokemon.contarPokemon();
-			cambioPokemon(indice);
+			indice=listaPokemon.size()-1;
+			poke =listaPokemon.get(indice);
+			cambioPokemon();
 
 		}
 	}
 	public void siguiente() {
-		if (indice++<pokemon.contarPokemon()) {
-			cambioPokemon(indice);
+		if (indice++<listaPokemon.size()-1) {
+			poke =listaPokemon.get(indice);
+			cambioPokemon();
 			
 		}else {
-			indice=1;
-			cambioPokemon(indice);
+			indice=0;
+			poke =listaPokemon.get(indice);
+			cambioPokemon();
 
 		}
 	}
@@ -303,4 +308,5 @@ public class PokedexView implements KeyListener {
 		// TODO Auto-generated method stub
 		
 	}
+
 }
