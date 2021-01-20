@@ -1,7 +1,5 @@
 package view;
 
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextArea;
@@ -15,16 +13,14 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
-import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import javax.swing.JTextField;
 import java.awt.Font;
-import java.awt.Image;
+
 
 public class PokedexView implements KeyListener {
 
@@ -97,6 +93,7 @@ public class PokedexView implements KeyListener {
 	private void setLiseners() {
 		btnSiguiente.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				frmPokedex.requestFocus();
 				siguiente();
 				
 			}
@@ -104,6 +101,7 @@ public class PokedexView implements KeyListener {
 		
 		btnAnterior.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent arg0) {
+			frmPokedex.requestFocus();
 			anterior();
 		}
 	});
@@ -125,7 +123,7 @@ public class PokedexView implements KeyListener {
 		
 		lblNumPokedex = new JLabel("Numero de la Pokedex");
 		lblNumPokedex.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblNumPokedex.setBounds(194, 11, 138, 14);
+		lblNumPokedex.setBounds(194, 19, 138, 14);
 		frmPokedex.getContentPane().add(lblNumPokedex);
 		
 		lblAltura = new JLabel("Altura:");
@@ -179,7 +177,7 @@ public class PokedexView implements KeyListener {
 		
 		lblNumPokedexBD = new JLabel("New label");
 		lblNumPokedexBD.setFont(new Font("Script MT Bold", Font.BOLD, 23));
-		lblNumPokedexBD.setBounds(342, -3, 84, 36);
+		lblNumPokedexBD.setBounds(342, 11, 84, 36);
 		frmPokedex.getContentPane().add(lblNumPokedexBD);
 		
 		btnAnterior = new JButton("Anterior");
