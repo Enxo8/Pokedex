@@ -54,7 +54,7 @@ public class BuscarView {
 		grupoBotones = new ButtonGroup();
 		setFrame();
 		setComponents();
-		setLiseners();
+		setListeners();
 		frame.setVisible(true);
 		
 	}
@@ -111,7 +111,7 @@ public class BuscarView {
 		
 	}
 	
-	private void setLiseners() {
+	private void setListeners() {
 		
 		rdbtnTipo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -164,7 +164,7 @@ public class BuscarView {
 		
 	}
 	
-	private void rellenarComboBox() {
+	public void rellenarComboBox() {
 		
 		ArrayList<String>rellenoComboBox = pokemon.BuscarTipos();
 		

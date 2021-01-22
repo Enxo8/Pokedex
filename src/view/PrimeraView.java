@@ -47,7 +47,7 @@ public class PrimeraView {
 	private void initialize() {
 		setFrame();
 		setComponents();
-		setLiseners();
+		setListeners();
 		frmLogin.setVisible(true);
 		
 		
@@ -87,7 +87,7 @@ public class PrimeraView {
 		frmLogin.getContentPane().add(lblContrasena);
 		
 	}
-	public void setLiseners() {
+	public void setListeners() {
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (login.comprobarLogin(textFieldUsuario.getText(), String.valueOf(passwordField.getPassword()))) {
@@ -104,8 +104,10 @@ public class PrimeraView {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				if (e.getKeyChar() == KeyEvent.VK_ENTER) {
-					new PokedexView();
-					frmLogin.dispose();
+					if (login.comprobarLogin(textFieldUsuario.getText(), String.valueOf(passwordField.getPassword()))) {
+						new PokedexView();
+						frmLogin.dispose();
+					}
 					
 				}
 			}

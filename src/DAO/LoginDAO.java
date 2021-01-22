@@ -9,9 +9,8 @@ public class LoginDAO extends AbstractDao {
 		try {
 			ResultSet rs = stmt.executeQuery("Select * from pokemon.login where username like '"+usuario+"' and password like '"+ contrasena+"'");
 			
-			if (rs.next()) {
-				return true;
-			}
+				return rs.next();
+			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

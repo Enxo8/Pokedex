@@ -1,9 +1,12 @@
 package DAO;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+
+import com.mysql.cj.x.protobuf.MysqlxDatatypes.Array;
 
 import models.Pokemon;
 
@@ -47,10 +50,25 @@ public class PokedexDAO extends AbstractDao {
 
 	}
 	
-	public int contarPokemon() {
+	public int contarPokemonMax() {
 		
 		try {
-			ResultSet rsContar = stmt.executeQuery("SELECT COUNT(*) from pokemon.pokemon");
+			ResultSet rsContar = stmt.executeQuery("SELECT MAX(numero) from pokemon.pokemon");
+			if (rsContar.next()) {
+				 return rsContar.getInt(1);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return -1;
+		
+	}
+	
+	public int contarPokemonMin() {
+		
+		try {
+			ResultSet rsContar = stmt.executeQuery("SELECT MIN(numero) from pokemon.pokemon");
 			if (rsContar.next()) {
 				 return rsContar.getInt(1);
 			}
@@ -190,5 +208,74 @@ public class PokedexDAO extends AbstractDao {
 
 		return null;
 
+	}
+	
+	public boolean HayPokemon(int indice) {
+		
+		try {
+			ResultSet rsSiguiente = stmt.executeQuery("Select * from pokemon where numero = "+indice);
+			if (rsSiguiente.next()) {
+				return true;
+			}else {
+				return false;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return false;
+		
+	}
+	
+	public void anadirPokemon(Pokemon pokemon) {
+		
+		try {
+			String cons1 = "INSERT INTO `pokemon`.`pokemon` (`Numero`, `Nombre`, `Descripcion`, `Altura`, `Peso`, `Categoria`, `Habilidad`) VALUES (?, ?, ?, ?, ?, ?, ?)";
+			PreparedStatement stmt = conn.prepareStatement(cons1);
+			stmt.setInt(1, pokemon.getNumero());
+			stmt.setString(2, pokemon.getNombre());
+			stmt.setString(3, pokemon.getDescripcion());
+			stmt.setFloat(4, pokemon.getAltura());
+			stmt.setFloat(5, pokemon.getPeso());
+			stmt.setString(6, pokemon.getCategoria());
+			stmt.setString(7, pokemon.getHabilidad());
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		try {
+			String cons2 = "INSERT INTO `pokemon`.`pokemon_tipo` (`Numero`, `Codigo_Tipo`) VALUES (?, ?)";
+			PreparedStatement stmt2 = conn.prepareStatement(cons2);
+			String[] arrayTipo = pokemon.getTipos().split(", ");
+			for (int i = 0; i < arrayTipo.length; i++) {
+				stmt2.setInt(1, pokemon.getNumero());
+				stmt2.setInt(2, buscarNumTipo(arrayTipo[i]));
+				stmt2.executeUpdate();
+			}
+			
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
+	public int buscarNumTipo(String tipo) {
+		
+		try {
+			ResultSet rsBuscar = stmt.executeQuery("SELECT Codigo_Tipo FROM pokemon.tipos where nombre_tipo like '"+tipo+"'");
+			if (rsBuscar.next()) {
+				return rsBuscar.getInt(1);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return 0;
 	}
 }

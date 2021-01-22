@@ -77,7 +77,7 @@ public class ResultView implements KeyListener  {
 		setFrame();
 		setComponents();
 		cambioPokemon();
-		setLiseners();
+		setListeners();
 		frmResultBusqueda.setVisible(true);
 		
 	}
@@ -100,7 +100,7 @@ public class ResultView implements KeyListener  {
 		frmResultBusqueda.getContentPane().setLayout(null);	
 	}
 
-	private void setLiseners() {
+	private void setListeners() {
 		btnSiguiente.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				frmResultBusqueda.requestFocus();
