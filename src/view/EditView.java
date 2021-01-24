@@ -1,10 +1,14 @@
 package view;
 
+
 import java.awt.Font;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+
 import java.util.ArrayList;
+
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -17,9 +21,7 @@ import javax.swing.JTextField;
 import DAO.PokedexDAO;
 import models.Pokemon;
 
-import java.awt.event.ActionEvent;
-
-public class AnadirView {
+public class EditView {
 
 	private JFrame frame;
 	private JLabel lblNumeroPK;
@@ -44,34 +46,72 @@ public class AnadirView {
 	private PokedexDAO pokemon;
 	private JTextArea textAreaDescripcion;
 	private Pokemon poke;
+	
 
 	/**
 	 * Create the application.
 	 */
-	public AnadirView() {
+	public EditView(Pokemon poke) {
+		this.poke=poke;
 		initialize();
+		frame.setVisible(true);
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-
+		
 		pokemon = new PokedexDAO();
 		setFrame();
 		setComponents();
+		cambioPokemon();
 		setListeners();
-		frame.setVisible(true);
+		
 	}
 
 	private void setListeners() {
+		
+		//Se usa para obtener los datos de los textField e introducirlos en el objeto para introducirlos en la BD
+		btnAnadir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				String tipo1=" ", tipo2=" ",tipos="" ;
+				
+				if (!textFieldNumero.getText().isBlank() && !textFieldNombre.getText().isBlank()
+						&& !textFieldHabilidad.getText().isBlank() && !textFieldCategoria.getText().isBlank()
+						&& !textFieldAltura.getText().isBlank() && !textFieldPeso.getText().isBlank()
+						&& !textAreaDescripcion.getText().isBlank()) {
+					
+					if (comboBoxTipo2.getSelectedItem().toString().isBlank()) {
+						tipos = comboBoxTipo1.getSelectedItem().toString();
+						
+					}else {
+						tipo1 = comboBoxTipo1.getSelectedItem().toString();
+						tipo2 = comboBoxTipo2.getSelectedItem().toString();
+						tipos = tipo1 + ", " + tipo2;
+						
+					}
+					
+	
+					poke = new Pokemon(Integer.parseInt(textFieldNumero.getText()), textFieldNombre.getText(),
+							textAreaDescripcion.getText(), Float.parseFloat(textFieldAltura.getText()),
+							Float.parseFloat(textFieldPeso.getText()), textFieldHabilidad.getText(),
+							textFieldCategoria.getText(), tipos);
+
+					pokemon.editarPokemon(poke);
+					JOptionPane.showMessageDialog(frame, "Se ha editado correctamente");
+					
+				}
+			}
+
+		});
 
 		textFieldNumero.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
 				char c = e.getKeyChar();
 
-				if (c < '0' || c > '9') {//Condicional por el cual no se pueden introducir letras en el campo de numero
+				if (c < '0' || c > '9') {
 					e.consume();
 				}
 			}
@@ -82,7 +122,7 @@ public class AnadirView {
 			public void keyTyped(KeyEvent e) {
 				char c = e.getKeyChar();
 
-				if ((c < 'a' || c > 'z') && (c < 'A' || c > 'Z') && !(c==KeyEvent.VK_SPACE) && !(c=='\'') && (c=='ñ')) {//Condicional por el cual no se pueden introducir numeros
+				if ((c < 'a' || c > 'z') && (c < 'A' || c > 'Z') && !(c==KeyEvent.VK_SPACE) && !(c=='\'')) {
 					
 					e.consume();
 				}
@@ -94,19 +134,30 @@ public class AnadirView {
 			public void keyTyped(KeyEvent e) {
 				char c = e.getKeyChar();
 
-				if ((c < 'a' || c > 'z') && (c < 'A' || c > 'Z') && !(c==KeyEvent.VK_SPACE) && !(c=='\'') && (c=='ñ')) {
+				if ((c < 'a' || c > 'z') && (c < 'A' || c > 'Z') && !(c==KeyEvent.VK_SPACE) && !(c=='\'')) {
+					
 					e.consume();
 				}
 			}
 		});
 
-		
+		textFieldHabilidad.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char c = e.getKeyChar();
+
+				if ((c < 'a' || c > 'z') && (c < 'A' || c > 'Z') && !(c==KeyEvent.VK_SPACE) && !(c=='\'')) {
+					
+					e.consume();
+				}
+			}
+		});
 
 		textFieldAltura.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
 				char c = e.getKeyChar();
-				if ((c < '0' || c > '9') && c != '.') {//Condicional por el cual no se pueden introducir letras y si se pueden poner "." para que sea float
+				if ((c < '0' || c > '9') && c != '.') {
 					e.consume();
 				}
 			}
@@ -134,7 +185,20 @@ public class AnadirView {
 				new PokedexView();
 			}
 		});
-		textFieldHabilidad.addKeyListener(new KeyAdapter() {
+		
+		textFieldNombre.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char c = e.getKeyChar();
+
+				if ((c < 'a' || c > 'z') && (c < 'A' || c > 'Z') && !(c==KeyEvent.VK_SPACE) && !(c=='\'') && (c=='ñ')) {//Condicional por el cual no se pueden introducir numeros
+					
+					e.consume();
+				}
+			}
+		});
+
+		textFieldCategoria.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
 				char c = e.getKeyChar();
@@ -144,45 +208,40 @@ public class AnadirView {
 				}
 			}
 		});
-		
-		btnAnadir.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				String tipo1=" ", tipo2=" ",tipos="" ;
-				
-				if (!textFieldNumero.getText().isBlank() && !textFieldNombre.getText().isBlank()
-						&& !textFieldHabilidad.getText().isBlank() && !textFieldCategoria.getText().isBlank()
-						&& !textFieldAltura.getText().isBlank() && !textFieldPeso.getText().isBlank()
-						&& !textAreaDescripcion.getText().isBlank()) {
-					
-					if (comboBoxTipo2.getSelectedItem().toString().isBlank()) {
-						tipos = comboBoxTipo1.getSelectedItem().toString();
-						
-					}else {
-						tipo1 = comboBoxTipo1.getSelectedItem().toString();
-						tipo2 = comboBoxTipo2.getSelectedItem().toString();
-						tipos = tipo1 + ", " + tipo2;
-						
-					}
-					
-	
-					poke = new Pokemon(Integer.parseInt(textFieldNumero.getText()), textFieldNombre.getText(),
-							textAreaDescripcion.getText(), Float.parseFloat(textFieldAltura.getText()),
-							Float.parseFloat(textFieldPeso.getText()), textFieldHabilidad.getText(),
-							textFieldCategoria.getText(), tipos);
 
-					pokemon.anadirPokemon(poke);
-					JOptionPane.showMessageDialog(frame, "Se ha guardado correctamente");
-					textFieldNumero.setText("");
-					textFieldNombre.setText("");
-					textFieldHabilidad.setText("");
-					textFieldCategoria.setText("");
-					textFieldAltura.setText("");
-					textFieldPeso.setText("");
-					textAreaDescripcion.setText("");
+		textFieldHabilidad.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char c = e.getKeyChar();
+
+				if ((c < 'a' || c > 'z') && (c < 'A' || c > 'Z') && !(c==KeyEvent.VK_SPACE) && !(c=='\'') && (c=='ñ')) {
+					
+					e.consume();
 				}
 			}
-
 		});
+
+		textFieldAltura.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char c = e.getKeyChar();
+				if ((c < '0' || c > '9') && c != '.') {//Condicional por el cual no se pueden introducir letras y si se pueden poner "." para que sea float
+					e.consume();
+				}
+			}
+		});
+
+		textFieldPeso.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char c = e.getKeyChar();
+				if ((c < '0' || c > '9') && c != '.') {
+					e.consume();
+				}
+			}
+		});
+
+		
 	}
 
 	private void setComponents() {
@@ -198,6 +257,7 @@ public class AnadirView {
 		frame.getContentPane().add(lblNumeroPK);
 
 		textFieldNumero = new JTextField();
+		textFieldNumero.setEditable(false);
 		textFieldNumero.setBounds(119, 56, 86, 20);
 		frame.getContentPane().add(textFieldNumero);
 		textFieldNumero.setColumns(10);
@@ -293,12 +353,9 @@ public class AnadirView {
 		frame.setBounds(100, 100, 444, 455);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
-
+		
 	}
-	
-	/**
-	 * Funcion para rellenar comboBox
-	 */
+
 	private void rellenarComboBox() {
 
 		ArrayList<String> rellenoComboBox = pokemon.BuscarTipos();
@@ -308,5 +365,30 @@ public class AnadirView {
 			comboBoxTipo2.addItem(rellenoComboBox.get(i));
 		}
 
+	}
+	
+	/**
+	 * Funcion para rellenar el pokemon segun la posicion
+	 */
+	public void cambioPokemon() {
+		String[] tipos = poke.getTipos().split(", ");
+		String numero=String.valueOf(poke.getNumero());
+		textFieldHabilidad.setText(poke.getHabilidad());
+		textFieldCategoria.setText(poke.getCategoria());
+		textFieldNombre.setText(poke.getNombre());
+		textFieldAltura.setText(Float.toString(poke.getAltura()));
+		textFieldPeso.setText(Float.toString(poke.getPeso()));
+		textFieldNumero.setText(Integer.toString(poke.getNumero()));
+		textAreaDescripcion.setText(poke.getDescripcion());
+		while (numero.length()<3) {
+			numero="0"+numero;
+		}
+		if (tipos.length>1) {
+			comboBoxTipo1.setSelectedItem(tipos[0]);
+			comboBoxTipo2.setSelectedItem(tipos[1]);
+		}else {
+			comboBoxTipo1.setSelectedItem(tipos[0]);
+		}
+			
 	}
 }

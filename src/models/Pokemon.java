@@ -1,6 +1,11 @@
 package models;
 
-public class Pokemon {
+/**
+ * Objeto pokemon que contiene los parametros con los que construiremos los pokemon mas adelante
+ * @author eNZO
+ *
+ */
+public class Pokemon { 
 	
 	private int numero;
 	private String nombre;

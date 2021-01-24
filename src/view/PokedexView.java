@@ -22,6 +22,7 @@ import java.net.URL;
 import java.awt.Font;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JMenu;
 
 public class PokedexView implements KeyListener {
@@ -46,7 +47,7 @@ public class PokedexView implements KeyListener {
 	private JButton btnSiguiente;
 	private PokedexDAO pokemon;
 	private Pokemon poke;
-	private int indice = 1;
+	private int indice;
 	private JLabel lblTipos;
 	private JLabel lblTiposBD;
 	private JMenuBar menuBar;
@@ -54,13 +55,14 @@ public class PokedexView implements KeyListener {
 	private JMenuItem mntmBuscar;
 	private JMenuItem mntmAnadir;
 	private JMenuItem mntmQuitar;
+	private JMenuItem mntmEditar;
+	private String confBorrar;
 
 	/**
 	 * Create the application.
 	 */
 	public PokedexView() {
 		pokemon = new PokedexDAO();
-
 		initialize();
 	}
 
@@ -68,6 +70,7 @@ public class PokedexView implements KeyListener {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		indice = pokemon.contarPokemonMin();
 		setFrame();
 		setComponents();
 		cambioPokemon(indice);
@@ -122,9 +125,30 @@ public class PokedexView implements KeyListener {
 		mntmAnadir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				new AnadirView();
+				frmPokedex.dispose();
 			}
 		});
-
+		
+		mntmEditar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				new EditView(poke);
+				frmPokedex.dispose();
+			}
+		});
+		
+		mntmQuitar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				confBorrar = JOptionPane.showInputDialog(frmPokedex, "Introduzca el nombre exacto del pokemon que desea borrar", JOptionPane.QUESTION_MESSAGE);
+				if (confBorrar!=null) {
+					if (confBorrar.equals(poke.getNombre())) {
+						pokemon.borrarPokemon(poke);
+						siguiente();
+					}else {
+						JOptionPane.showMessageDialog(frmPokedex, "No se encuentra el pokemon");
+					}
+				}
+			}
+		});
 	}
 
 	private void setComponents() {
@@ -222,13 +246,21 @@ public class PokedexView implements KeyListener {
 		mntmBuscar = new JMenuItem("Buscar Pokemon");
 		mnMenu.add(mntmBuscar);
 
-		mntmAnadir = new JMenuItem("A\u00F1adir Pokemon");
+		mntmAnadir = new JMenuItem("Anadir Pokemon");
 		mnMenu.add(mntmAnadir);
 
 		mntmQuitar = new JMenuItem("Quitar Pokemon");
 		mnMenu.add(mntmQuitar);
+		
+		mntmEditar = new JMenuItem("Editar Pokemon");
+		
+		mnMenu.add(mntmEditar);
 	}
-
+	
+	/**
+	 * Funcion que rellena el pokemon segun la posicion en la que se encuentre.
+	 * @param indice
+	 */
 	public void cambioPokemon(int indice) {
 		String numero = String.valueOf(indice);
 		poke = pokemon.pokemon(indice);
@@ -252,12 +284,14 @@ public class PokedexView implements KeyListener {
 		}
 
 	}
-
+	/**
+	 * Funcion que pasa al siguiente pokemon.
+	 */
 	public void siguiente() {
 		indice++;
 		boolean bul = true;
 		while (bul) {
-			if (pokemon.HayPokemon(indice)) {
+			if (pokemon.hayPokemon(indice)) {
 				cambioPokemon(indice);
 				bul = false;
 			} else {
@@ -272,12 +306,16 @@ public class PokedexView implements KeyListener {
 			}
 		}
 	}
-
+	
+	/**
+	 * Funcion que pasa al pokemon anterior
+	 * 
+	 */
 	public void anterior() {
 		indice--;
 		boolean bul = true;
 		while (bul) {
-			if (pokemon.HayPokemon(indice)) {
+			if (pokemon.hayPokemon(indice)) {
 				cambioPokemon(indice);
 				bul = false;
 			} else {
@@ -292,7 +330,9 @@ public class PokedexView implements KeyListener {
 			}
 		}
 	}
-
+	
+	
+	 //Aqui se anade la accion para poder moverse entre los pokemon con las flechas
 	@Override
 	public void keyPressed(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_RIGHT) {

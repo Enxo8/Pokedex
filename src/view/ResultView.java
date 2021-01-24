@@ -237,7 +237,10 @@ public class ResultView implements KeyListener  {
 		mntmSalir = new JMenuItem("Salir");
 		mnMenu.add(mntmSalir);
 	}
-
+	
+	/**
+	 * Funcion que rellena el pokemon segun la posicion en la que se encuentre.
+	 */
 	public void cambioPokemon() {
 		
 		String numero=String.valueOf(poke.getNumero());
@@ -262,7 +265,9 @@ public class ResultView implements KeyListener  {
 	}
 	
 
-	
+	/**
+	 * Funcion que pasa al pokemon anterior.
+	 */
 	public void anterior() {
 		if (indice-->0) {
 			poke =listaPokemon.get(indice);
@@ -275,6 +280,10 @@ public class ResultView implements KeyListener  {
 
 		}
 	}
+	
+	/**
+	 * Funcion que pasa al siguiente pokemon.
+	 */
 	public void siguiente() {
 		if (indice++<listaPokemon.size()-1) {
 			poke =listaPokemon.get(indice);

@@ -12,6 +12,10 @@ public abstract class AbstractDao {
 	protected Connection conn = conexion();
 	protected Statement stmt = sentencia();
 	
+	/**
+	 * Metodo que establece la conexion entre el programa y la BD con el usuario y contrasena del Administrador de la Base de Datos
+	 * @return
+	 */
 	private Connection conexion() {
 		Connection conn = null;
 		try {
@@ -23,6 +27,10 @@ public abstract class AbstractDao {
 		return conn;
 	}
 	
+	/**
+	 * Metodo que establece la sentenia a la BD
+	 * @return
+	 */
 	private Statement sentencia() {
 		Statement stmt = null;
 		try {

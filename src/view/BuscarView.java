@@ -18,6 +18,8 @@ import javax.swing.JButton;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.ActionEvent;
 
 public class BuscarView {
@@ -123,20 +125,39 @@ public class BuscarView {
 		btnBuscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (rdbtnTipo.isSelected()) {
-					listaPokemon=pokemon.BuscarPokemonTipo(comboBoxTipos.getSelectedItem().toString());
+					listaPokemon=pokemon.buscarPokemonTipo(comboBoxTipos.getSelectedItem().toString());
 					new ResultView(listaPokemon);
 					frame.dispose();
-				}else	if (rdbtnNombre.isSelected()) {
-					listaPokemon=pokemon.BuscarPokemonNombre(textFieldBuscar.getText());
+				}else if (rdbtnNombre.isSelected()) {
+					listaPokemon=pokemon.buscarPokemonNombre(textFieldBuscar.getText());
 					new ResultView(listaPokemon);
 					frame.dispose();
 				}else if (rdbtnNumero.isSelected()) {
-					listaPokemon=pokemon.BuscarPokemonNumero(Integer.parseInt(textFieldBuscar.getText()));
+					listaPokemon=pokemon.buscarPokemonNumero(Integer.parseInt(textFieldBuscar.getText()));
 					new ResultView(listaPokemon);
 					frame.dispose();
 				}
 				
 			}
+		});
+		
+		textFieldBuscar.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char c = e.getKeyChar();
+				if (rdbtnNombre.isSelected()) {
+					if (!(c < '0'|| c > '9')) {
+						e.consume();
+					}
+					
+				}else if (rdbtnNumero.isSelected()) {
+							if (c < '0' || c > '9') {//Condicional por el cual no se pueden introducir letras en el campo de numero
+								e.consume();
+							}
+						}
+					
+				}
+			
 		});
 		
 		rdbtnNombre.addActionListener(new ActionListener() {
@@ -153,6 +174,12 @@ public class BuscarView {
 			}
 		});
 		
+		btnVolver.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				new PokedexView();
+				frame.dispose();
+			}
+		});
 	}
 	
 	private void setFrame() {
@@ -164,7 +191,7 @@ public class BuscarView {
 		
 	}
 	
-	public void rellenarComboBox() {
+	public void rellenarComboBox() {//Rellena comboBox
 		
 		ArrayList<String>rellenoComboBox = pokemon.BuscarTipos();
 		

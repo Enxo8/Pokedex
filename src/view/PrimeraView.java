@@ -59,11 +59,11 @@ public class PrimeraView {
 		frmLogin.getContentPane().add(lblBienvenida);
 		
 		btnRegister = new JButton("Registrarse");
-		btnRegister.setBounds(71, 183, 89, 23);
+		btnRegister.setBounds(71, 183, 113, 23);
 		frmLogin.getContentPane().add(btnRegister);
 		
 		btnLogin = new JButton("Login");
-		btnLogin.setBounds(263, 183, 89, 23);
+		btnLogin.setBounds(263, 183, 99, 23);
 		frmLogin.getContentPane().add(btnLogin);
 		
 		textFieldUsuario = new JTextField();
@@ -112,6 +112,12 @@ public class PrimeraView {
 				}
 			}
 			
+		});
+		
+		btnRegister.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				new RegistroView(frmLogin);
+			}
 		});
 	}
 	public void setFrame() {
