@@ -35,7 +35,7 @@ CREATE TABLE `login` (
 
 LOCK TABLES `login` WRITE;
 /*!40000 ALTER TABLE `login` DISABLE KEYS */;
-INSERT INTO `login` VALUES ('admin','admin');
+INSERT INTO `login` VALUES ('admin','admin'),('enzo','pepe'),('Salva','1');
 /*!40000 ALTER TABLE `login` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -64,7 +64,7 @@ CREATE TABLE `pokemon` (
 
 LOCK TABLES `pokemon` WRITE;
 /*!40000 ALTER TABLE `pokemon` DISABLE KEYS */;
-INSERT INTO `pokemon` VALUES (1,'Bulbasaur','Este Pokémon nace con una semilla en el lomo, que brota con el paso del tiempo.',0.7,6.9,'Semilla','Espesura'),(2,'Ivysaur','Cuando le crece bastante el bulbo del lomo, pierde la capacidad de erguirse sobre las patas traseras.',1,13,'Semilla','Epesura'),(3,'Venusaur','La planta florece cuando absorbe energía solar, lo cual le obliga a buscar siempre la luz del sol.',2,100,'Semilla','Espesura'),(4,'Charmander','Prefiere las cosas calientes. Dicen que cuando llueve le sale vapor de la punta de la cola.',0.6,8.5,'Lagartija','Mar Llamas'),(5,'Charmeleon','Este Pokémon de naturaleza agresiva ataca en combate con su cola llameante y hace trizas al rival con sus afiladas garras.',1.1,19,'Llama','Mar Llamas'),(6,'Charizard','Escupe un fuego tan caliente que funde las rocas. Causa incendios forestales sin querer.',1.7,90.5,'Llama','Mar Llama'),(7,'Squirtle','Cuando retrae su largo cuello en el caparazón, dispara agua a una presión increíble.',0.5,9,'Tortuguita','Torrente'),(8,'Wartortle','Se lo considera un símbolo de longevidad. Los ejemplares más ancianos tienen musgo sobre el caparazón.',1,22.5,'Tortuga','Torrente'),(9,'Blastoise','Para acabar con su enemigo, lo aplasta con el peso de su cuerpo. En momentos de apuro, se esconde en el caparazón.',1.6,85.5,'Armazon','Torrente');
+INSERT INTO `pokemon` VALUES (2,'Ivysaur','Cuando le crece bastante el bulbo del lomo, pierde la capacidad de erguirse sobre las patas traseras.',1,13,'Semilla','Epesura'),(3,'Venusaur','La planta florece cuando absorbe energía solar, lo cual le obliga a buscar siempre la luz del sol.',2,100,'Semilla','Espesura'),(4,'Charmander','Prefiere las cosas calientes. Dicen que cuando llueve le sale vapor de la punta de la cola.',0.6,8.5,'Lagartija','Mar Llamas'),(5,'Charmeleon','Este Pokémon de naturaleza agresiva ataca en combate con su cola llameante y hace trizas al rival con sus afiladas garras.',1.1,19,'Llama','Mar Llamas'),(6,'Charizard','Escupe un fuego tan caliente que funde las rocas. Causa incendios forestales sin querer.',1.7,90.5,'Llama','Mar Llama'),(7,'Squirtle','Cuando retrae su largo cuello en el caparazón, dispara agua a una presión increíble.',0.5,9,'Tortuguita','Torrente'),(8,'Wartortle','Se lo considera un símbolo de longevidad. Los ejemplares más ancianos tienen musgo sobre el caparazón.',1,22.5,'Tortuga','Torrente'),(9,'Blastoise','Para acabar con su enemigo, lo aplasta con el peso de su cuerpo. En momentos de apuro, se esconde en el caparazón.',1.6,85.5,'Armazon','Torrente'),(16,'Pidgey','Su docilidad es tal que suelen defenderse levantando arena en lugar de contraatacar.',0.3,1.8,'Pajarito','Vista lince'),(123,'qwe','23awd',12,21,'wad','wad'),(124,'Scyzor','Un bicho de metal',12123,123,'sda','mj'),(12312,'awq','131awwad',123,31,'awd','awda');
 /*!40000 ALTER TABLE `pokemon` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -80,8 +80,8 @@ CREATE TABLE `pokemon_tipo` (
   `Codigo_Tipo` int NOT NULL,
   PRIMARY KEY (`Numero`,`Codigo_Tipo`),
   KEY `FK_Tipo_idx` (`Codigo_Tipo`),
-  CONSTRAINT `FK_Numero` FOREIGN KEY (`Numero`) REFERENCES `pokemon` (`Numero`),
-  CONSTRAINT `FK_Tipo` FOREIGN KEY (`Codigo_Tipo`) REFERENCES `tipos` (`Codigo_Tipo`)
+  CONSTRAINT `FK_Numero` FOREIGN KEY (`Numero`) REFERENCES `pokemon` (`Numero`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FK_Tipo` FOREIGN KEY (`Codigo_Tipo`) REFERENCES `tipos` (`Codigo_Tipo`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -91,7 +91,7 @@ CREATE TABLE `pokemon_tipo` (
 
 LOCK TABLES `pokemon_tipo` WRITE;
 /*!40000 ALTER TABLE `pokemon_tipo` DISABLE KEYS */;
-INSERT INTO `pokemon_tipo` VALUES (7,2),(8,2),(9,2),(4,7),(5,7),(6,7),(1,12),(2,12),(3,12),(1,17),(2,17),(3,17),(6,18);
+INSERT INTO `pokemon_tipo` VALUES (123,1),(124,1),(7,2),(8,2),(9,2),(12312,2),(124,3),(4,7),(5,7),(6,7),(16,11),(2,12),(3,12),(2,17),(3,17),(6,18),(16,18);
 /*!40000 ALTER TABLE `pokemon_tipo` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -128,4 +128,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-01-15  0:21:44
+-- Dump completed on 2021-01-24 22:18:33
